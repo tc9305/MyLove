@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我們的愛情故事</title>
+
+  <!-- 分享卡片與 icon -->
+  <meta property="og:description" content="我們的愛情故事與共同回憶。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/16.jpg" />
+  <meta property="og:locale" content="zh_TW" />
+  <link rel="icon" href="images/4.jpg" />
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --text: #222;
+      --muted: #666;
+      --brand: #e91e63;
+      --brand-weak: #fce4ec;
+      --card: #ffffff;
+      --shadow: rgba(0,0,0,.08);
+    }
+    :root.dark{
+      --bg:#121212; --text:#eaeaea; --muted:#b5b5b5;
+      --brand:#ff5c8a; --brand-weak:#2a1620; --card:#1a1a1a; --shadow:rgba(0,0,0,.4);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC",Arial,sans-serif;line-height:1.7;background:var(--bg);color:var(--text)}
+    .container{max-width:960px;margin:0 auto;padding:0 20px}
+    .site-header{background:linear-gradient(180deg,var(--brand) 0%, #d81b60 100%);color:#fff;padding:48px 0 40px;text-align:center}
+    .site-title{margin:0 0 8px;font-weight:800;letter-spacing:1px}
+    .lead{margin:0;font-size:1.05rem;opacity:.95}
+    main.container{padding:24px 0 48px}
+    .card{background:var(--card);border-radius:16px;box-shadow:0 6px 20px var(--shadow);padding:20px;margin:16px 0}
+    .sub{color:var(--muted);margin-top:-4px}
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:12px}
+    .g-item{display:block;border-radius:12px;overflow:hidden}
+    .g-item img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .25s ease}
+    .g-item:focus img,.g-item:hover img{transform:scale(1.03)}
+    .anniv-list{list-style:none;padding:0;margin:8px 0 0}
+    .anniv-list li{padding:10px 12px;border-left:4px solid var(--brand);background:var(--brand-weak);border-radius:8px;margin:8px 0}
+    textarea{width:100%;border:1px solid #ddd;background:var(--bg);color:var(--text);border-radius:12px;padding:12px 14px;resize:vertical}
+    .actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+    .btn{appearance:none;border:none;background:var(--brand);color:#fff;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:700}
+    .btn-ghost{background:transparent;color:var(--brand);outline:2px solid var(--brand)}
+    .save-status{color:var(--muted);font-size:.9rem}
+    .lightbox{border:none;padding:0;background:transparent;max-width:90vw}
+    .lightbox::backdrop{background:rgba(0,0,0,.65)}
+    .lightbox img{max-width:90vw;max-height:80vh;border-radius:12px;display:block}
+    .lightbox-close{position:fixed;top:20px;right:20px;font-size:28px;width:40px;height:40px;border-radius:50%;border:none;cursor:pointer}
+    .site-footer{text-align:center;padding:24px 0 48px;color:var(--muted)}
+    @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">我們的愛情故事</h1>
+      <p class="lead">
+        從 <time id="start-date" data-start="2025-01-09">2025-01-09</time> 開始，
+        我們已經一起走過 <span id="day-counter">0</span> 天 ❤
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" aria-labelledby="photos-title">
+      <h2 id="photos-title">照片回顧</h2>
+      <p class="sub">點圖片可放大瀏覽</p>
+      <div class="gallery" id="gallery">
+      
+      </div>
+    </section>
+<!-- 倒數：下一個紀念日 -->
+<section class="card" aria-labelledby="countdown-title">
+  <h2 id="countdown-title">下一個紀念日倒數</h2>
+  <p class="sub">距離 <strong id="next-anniv-name">—</strong> 還有</p>
+  <p style="font-size:2rem;margin:.25rem 0;"><span id="next-anniv-days">—</span> 天</p>
+  <p class="sub">日期：<span id="next-anniv-date">—</span></p>
+</section>
+
+<!-- 抽卡：隨機回憶 -->
+<section class="card" aria-labelledby="draw-title">
+  <h2 id="draw-title">抽一張回憶</h2>
+  <div class="actions">
+    <button id="draw-btn" class="btn">抽卡！</button>
+    <span class="sub">隨機回憶</span>
+  </div>
+  <div id="draw-result" style="margin-top:12px">
+    <img id="draw-img" alt="隨機回憶" style="max-width:100%;border-radius:12px;display:none">
+    <p id="draw-caption" class="sub" style="margin-top:8px"></p>
+  </div>
+</section>
+    <section class="card" aria-labelledby="anniv-title">
+      <h2 id="anniv-title">重要紀念日</h2>
+      <ul id="anniv-list" class="anniv-list" aria-live="polite"></ul>
+    </section>
+
+    <!-- Email 寄送表單 -->
+<section class="card" aria-labelledby="mail-title">
+  <h2 id="mail-title">寄一封小信給你 ❤</h2>
+  <form id="love-form" action="*" method="POST">
+    <input type="text" name="name" placeholder="你的名字" required
+           style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;margin:5px 0;display:block;width:100%">
+    <input type="email" name="_replyto" placeholder="你的Email（回信用）" required
+           style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;margin:5px 0;display:block;width:100%">
+    <textarea name="message" placeholder="想說的話…" required rows="4"
+              style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;margin:5px 0;display:block;width:100%"></textarea>
+    <button type="submit" class="btn">送出</button>
+  </form>
+  <p id="form-status" class="sub" style="margin-top:8px"></p>
+</section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>為我們製作 by <span id="author">Us</span> · <a href="#" id="toggle-theme">切換主題</a></p>
+    </div>
+  </footer>
+
+  <dialog id="lightbox" class="lightbox" aria-label="圖片預覽">
+    <img id="lightbox-img" alt="放大圖片" />
+    <button id="lightbox-close" class="lightbox-close" aria-label="關閉">×</button>
+  </dialog>
+
+  <script>
+  (function () {
+  // ===== 基本設定 =====
+  const TOTAL_PHOTOS = 16; // 抽卡用的總數（1.jpg ~ 16.jpg）
+  const CAPTIONS = {
+    "images/2.jpg": "第一次旅行合照",
+    "images/5.jpg": "生日紀念日",
+    "images/11.jpg": "聖誕節交換禮物"
+  };
+  const ANNIVERSARIES = [
+    { date: "2025-01-09", title: "在一起" },
+    { date: "2025-02-14", title: "情人節" },
+    { date: "2025-05-20", title: "520" },
+    { date: "2025-12-25", title: "聖誕節" }
+  ];
+
+  // ===== 小工具 =====
+  const $  = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const pad2 = n => (n<10 ? "0"+n : ""+n);
+
+  // ===== 天數計算 =====
+  (function () {
+    const el = $("#start-date");
+    if (!el) return;
+    const start = new Date((el.getAttribute("data-start") || el.textContent.trim()) + "T00:00:00");
+    const today = new Date();
+    const days = Math.floor((today - start) / (1000*60*60*24));
+    $("#day-counter").textContent = String(days);
+  })();
+
+  // ===== 相簿自動載入（你刻意用 5~12，保留） =====
+  (function () {
+    const g = $("#gallery");
+    if (!g) return;
+    const fr = document.createDocumentFragment();
+    for (let i = 5; i <= 12; i++) {
+      const path = `images/${i}.jpg`;
+      const a = document.createElement("a");
+      a.href = path;
+      a.className = "g-item";
+      const img = document.createElement("img");
+      img.src = path;
+      img.alt = CAPTIONS[path] || `回憶照片 ${i}`;
+      img.loading = "lazy";
+      a.appendChild(img);
+      fr.appendChild(a);
+    }
+    g.appendChild(fr);
+  })();
+
+  // ===== 紀念日渲染 =====
+  (function () {
+    const list = $("#anniv-list");
+    if (!list) return;
+    ANNIVERSARIES
+      .slice().sort((a,b)=>a.date.localeCompare(b.date))
+      .forEach(x => {
+        const li = document.createElement("li");
+        li.textContent = `${x.date}：${x.title}`;
+        list.appendChild(li);
+      });
+  })();
+
+  // ===== 下一個紀念日倒數 =====
+  (function () {
+    const nameEl = $("#next-anniv-name");
+    const daysEl = $("#next-anniv-days");
+    const dateEl = $("#next-anniv-date");
+    if (!nameEl || !daysEl || !dateEl) return;
+
+    const today = new Date();
+    const candidates = ANNIVERSARIES.map(a => {
+      const [,m,d] = a.date.split("-").map(Number);
+      const thisYear = new Date(today.getFullYear(), m-1, d);
+      const nextYear = new Date(today.getFullYear()+1, m-1, d);
+      const target = (thisYear >= new Date(today.getFullYear(), today.getMonth(), today.getDate())) ? thisYear : nextYear;
+      return { title: a.title, date: target };
+    }).sort((x,y)=> x.date - y.date);
+
+    const next = candidates[0];
+    const diffDays = Math.ceil((next.date - today) / (1000*60*60*24));
+    nameEl.textContent = next.title;
+    dateEl.textContent = `${next.date.getFullYear()}-${pad2(next.date.getMonth()+1)}-${pad2(next.date.getDate())}`;
+    daysEl.textContent = diffDays;
+  })();
+
+  // ===== 燈箱（左右切換） =====
+  (function () {
+    const lightbox = $("#lightbox");
+    const lightboxImg = $("#lightbox-img");
+    const closeBtn = $("#lightbox-close");
+    let currentIndex = -1;
+
+    const items = $$("#gallery a.g-item");
+    const openAt = (idx) => {
+      currentIndex = (idx + items.length) % items.length;
+      const href = items[currentIndex].getAttribute("href");
+      lightboxImg.src = href;
+      if (typeof lightbox.showModal === "function") lightbox.showModal();
+      else lightbox.setAttribute("open","");
+    };
+
+    items.forEach((a, idx) => {
+      a.addEventListener("click", e => { e.preventDefault(); openAt(idx); });
+    });
+    closeBtn.addEventListener("click", () => lightbox.close());
+    lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.close(); });
+    document.addEventListener("keydown", e => {
+      if (!lightbox.open) return;
+      if (e.key === "Escape") lightbox.close();
+      if (e.key === "ArrowRight") openAt(currentIndex+1);
+      if (e.key === "ArrowLeft") openAt(currentIndex-1);
+    });
+  })();
+
+  // ===== 抽卡（從 1.jpg ~ TOTAL_PHOTOS.jpg 隨機抽） =====
+  (function () {
+    const btn = $("#draw-btn");
+    const img = $("#draw-img");
+    const cap = $("#draw-caption");
+    if (!btn || !img || !cap) return;
+
+    const pool = Array.from({length: TOTAL_PHOTOS}, (_,i)=> `images/${i+1}.jpg`);
+    const draw = () => {
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      img.src = pick;
+      img.style.display = "block";
+      cap.textContent = CAPTIONS[pick] || "小小的回憶片段";
+    };
+    btn.addEventListener("click", draw);
+  })();
+
+  // ===== 主題切換 =====
+  (function(){
+    const KEY='our-theme';
+    const apply = mode => document.documentElement.classList.toggle('dark', mode==='dark');
+    const saved = localStorage.getItem(KEY);
+    if(saved) apply(saved);
+    const toggle = $('#toggle-theme');
+    if (toggle) {
+      toggle.addEventListener('click', e=>{
+        e.preventDefault();
+        const nowDark = !document.documentElement.classList.contains('dark');
+        const mode = nowDark ? 'dark' : 'light';
+        apply(mode); localStorage.setItem(KEY, mode);
+      });
+    }
+  })();
+})();
+
+// ===== 寄信 (Formspree) =====
+(function(){
+  const form = document.getElementById("love-form");
+  const status = document.getElementById("form-status");
+
+  if(form){
+    form.addEventListener("submit", async function(e){
+      e.preventDefault();
+      if (form.action === "*" || !form.action.startsWith("https://")) {
+        status.textContent = "請先把 form action 換成你的 Formspree endpoint 才能寄信。";
+        return;
+      }
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, {
+          method: form.method || "POST",
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if(res.ok){
+          status.textContent = "寄送成功！💌";
+          form.reset();
+        } else {
+          status.textContent = "寄送失敗，請再試一次。";
+        }
+      } catch(err){
+        status.textContent = "寄送錯誤：" + err.message;
+      }
+    });
+  }
+})();
+
+  </script>
+</body>
+</html>
