@@ -10,51 +10,404 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="images/16.jpg" />
   <meta property="og:locale" content="zh_TW" />
-  <link rel="icon" href="images/4.jpg" />
+  <link rel="icon" href="images/2.jpg" />
 
   <style>
     :root{
-      --bg: #ffffff;
-      --text: #222;
-      --muted: #666;
+      --bg: #fffafa;
+      --text: #4a2c2c;
+      --muted: #a67f8e;
       --brand: #e91e63;
       --brand-weak: #fce4ec;
       --card: #ffffff;
-      --shadow: rgba(0,0,0,.08);
+      --shadow: rgba(233, 30, 99, 0.15);
+      --pink-light: #ffeff6;
+      --pink-dark: #d81b60;
+      --gold: #e6c9a8;
     }
     :root.dark{
-      --bg:#121212; --text:#eaeaea; --muted:#b5b5b5;
-      --brand:#ff5c8a; --brand-weak:#2a1620; --card:#1a1a1a; --shadow:rgba(0,0,0,.4);
+      --bg:#1a1015; --text:#f9e1e8; --muted:#d4a5b5;
+      --brand:#ff5c8a; --brand-weak:#3a1e29; --card:#2a1924; --shadow:rgba(255, 92, 138, 0.2);
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans TC",Arial,sans-serif;line-height:1.7;background:var(--bg);color:var(--text)}
+    body{
+      margin:0;
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height:1.7;
+      background:var(--bg);
+      color:var(--text);
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50,50 C60,40 75,35 85,40 C95,45 95,60 85,70 C75,80 60,85 50,80 C40,85 25,80 15,70 C5,60 5,45 15,40 C25,35 40,40 50,50Z' fill='none' stroke='%23ffeff630' stroke-width='0.5'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: -1;
+    }
     .container{max-width:960px;margin:0 auto;padding:0 20px}
-    .site-header{background:linear-gradient(180deg,var(--brand) 0%, #d81b60 100%);color:#fff;padding:48px 0 40px;text-align:center}
-    .site-title{margin:0 0 8px;font-weight:800;letter-spacing:1px}
-    .lead{margin:0;font-size:1.05rem;opacity:.95}
-    main.container{padding:24px 0 48px}
-    .card{background:var(--card);border-radius:16px;box-shadow:0 6px 20px var(--shadow);padding:20px;margin:16px 0}
-    .sub{color:var(--muted);margin-top:-4px}
-    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:12px}
-    .g-item{display:block;border-radius:12px;overflow:hidden}
-    .g-item img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .25s ease}
-    .g-item:focus img,.g-item:hover img{transform:scale(1.03)}
-    .anniv-list{list-style:none;padding:0;margin:8px 0 0}
-    .anniv-list li{padding:10px 12px;border-left:4px solid var(--brand);background:var(--brand-weak);border-radius:8px;margin:8px 0}
-    textarea{width:100%;border:1px solid #ddd;background:var(--bg);color:var(--text);border-radius:12px;padding:12px 14px;resize:vertical}
-    .actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
-    .btn{appearance:none;border:none;background:var(--brand);color:#fff;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:700}
-    .btn-ghost{background:transparent;color:var(--brand);outline:2px solid var(--brand)}
-    .save-status{color:var(--muted);font-size:.9rem}
-    .lightbox{border:none;padding:0;background:transparent;max-width:90vw}
-    .lightbox::backdrop{background:rgba(0,0,0,.65)}
-    .lightbox img{max-width:90vw;max-height:80vh;border-radius:12px;display:block}
-    .lightbox-close{position:fixed;top:20px;right:20px;font-size:28px;width:40px;height:40px;border-radius:50%;border:none;cursor:pointer}
-    .site-footer{text-align:center;padding:24px 0 48px;color:var(--muted)}
-    @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+    .site-header{
+      background: linear-gradient(135deg, var(--brand) 0%, var(--pink-dark) 100%);
+      color:#fff;
+      padding: 60px 0 50px;
+      text-align:center;
+      position: relative;
+      overflow: hidden;
+    }
+    .site-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,3.5 C10,3.5 11,1 13,1 C15,1 16,3 16,5 C16,7 14,9 10,13 C6,9 4,7 4,5 C4,3 5,1 7,1 C9,1 10,3.5 10,3.5Z' fill='%23ffffff20'/%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+    .site-title{
+      margin:0 0 12px;
+      font-weight:900;
+      letter-spacing:2px;
+      font-size: 2.8rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .site-title::after {
+      content: "❤";
+      position: absolute;
+      font-size: 1.8rem;
+      margin-left: 8px;
+      animation: pulse 2s infinite;
+    }
+    .lead{
+      margin:0;
+      font-size:1.15rem;
+      opacity:.95;
+      font-weight: 300;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    main.container{padding:32px 0 60px}
+    .card{
+      background:var(--card);
+      border-radius:20px;
+      box-shadow:0 8px 30px var(--shadow);
+      padding:28px;
+      margin:24px 0;
+      position: relative;
+      border: 1px solid rgba(233, 30, 99, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), var(--gold));
+      border-radius: 20px 20px 0 0;
+    }
+    h2 {
+      color: var(--brand);
+      font-weight: 700;
+      margin-top: 0;
+      position: relative;
+      display: inline-block;
+    }
+    h2::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--brand);
+      border-radius: 3px;
+    }
+    .sub{
+      color:var(--muted);
+      margin-top:4px;
+      font-size: 0.95rem;
+    }
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:16px;
+      margin-top:16px;
+    }
+    .g-item{
+      display:block;
+      border-radius:16px;
+      overflow:hidden;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .g-item::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.4));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+    .g-item img{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+      display:block;
+      transition:transform .5s ease;
+    }
+    .g-item:focus, .g-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .g-item:focus::before, .g-item:hover::before {
+      opacity: 1;
+    }
+    .g-item:focus img,.g-item:hover img{
+      transform:scale(1.05);
+    }
+    .anniv-list{
+      list-style:none;
+      padding:0;
+      margin:12px 0 0;
+    }
+    .anniv-list li{
+      padding:14px 16px;
+      border-left:4px solid var(--brand);
+      background:var(--brand-weak);
+      border-radius:12px;
+      margin:12px 0;
+      transition: transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .anniv-list li::before {
+      content: "❤";
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--brand);
+      opacity: 0.3;
+      font-size: 1.5rem;
+    }
+    .anniv-list li:hover {
+      transform: translateX(5px);
+    }
+    textarea, input{
+      width:100%;
+      border:1px solid #e8d1da;
+      background:var(--bg);
+      color:var(--text);
+      border-radius:12px;
+      padding:14px 16px;
+      resize:vertical;
+      font-family: inherit;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    textarea:focus, input:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+    }
+    .actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--pink-dark) 100%);
+      color:#fff;
+      padding:12px 24px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+      box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.6s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(233, 30, 99, 0.4);
+    }
+    .btn:hover::before {
+      left: 100%;
+    }
+    .btn-ghost{
+      background:transparent;
+      color:var(--brand);
+      outline:2px solid var(--brand);
+      box-shadow: none;
+    }
+    .btn-ghost:hover {
+      background: var(--brand-weak);
+    }
+    .save-status{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+    .lightbox{
+      border:none;
+      padding:0;
+      background:transparent;
+      max-width:90vw;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .lightbox::backdrop{
+      background:rgba(0,0,0,.8);
+      backdrop-filter: blur(4px);
+    }
+    .lightbox img{
+      max-width:90vw;
+      max-height:80vh;
+      border-radius:12px;
+      display:block;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .lightbox-close{
+      position:fixed;
+      top:20px;
+      right:20px;
+      font-size:28px;
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      border:none;
+      cursor:pointer;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.1);
+    }
+    .site-footer{
+      text-align:center;
+      padding:40px 0 60px;
+      color:var(--muted);
+      position: relative;
+    }
+    .site-footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--brand), transparent);
+    }
+    #next-anniv-days {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--brand);
+      display: block;
+      margin: 10px 0;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #draw-result {
+      text-align: center;
+      padding: 20px 0;
+    }
+    #draw-img {
+      max-width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: all 0.5s ease;
+      display: none;
+    }
+    #draw-caption {
+      font-style: italic;
+      margin-top: 16px;
+      font-size: 1.1rem;
+      color: var(--brand);
+    }
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      opacity: 0;
+      color: rgba(233, 30, 99, 0.5);
+      font-size: 20px;
+      animation: float 15s infinite linear;
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none!important;animation:none!important}
+    }
+    @media (max-width: 768px) {
+      .site-title { font-size: 2.2rem; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .card { padding: 20px; }
+    }
   </style>
 </head>
 <body>
+  <!-- 漂浮愛心背景 -->
+  <div class="floating-hearts" id="floating-hearts"></div>
+
   <header class="site-header">
     <div class="container">
       <h1 class="site-title">我們的愛情故事</h1>
@@ -68,56 +421,59 @@
   <main class="container">
     <section class="card" aria-labelledby="photos-title">
       <h2 id="photos-title">照片回顧</h2>
-      <p class="sub">點圖片可放大瀏覽</p>
+      <p class="sub">點擊圖片可放大瀏覽我們的甜蜜時刻</p>
       <div class="gallery" id="gallery">
       
       </div>
     </section>
-<!-- 倒數：下一個紀念日 -->
-<section class="card" aria-labelledby="countdown-title">
-  <h2 id="countdown-title">下一個紀念日倒數</h2>
-  <p class="sub">距離 <strong id="next-anniv-name">—</strong> 還有</p>
-  <p style="font-size:2rem;margin:.25rem 0;"><span id="next-anniv-days">—</span> 天</p>
-  <p class="sub">日期：<span id="next-anniv-date">—</span></p>
-</section>
 
-<!-- 抽卡：隨機回憶 -->
-<section class="card" aria-labelledby="draw-title">
-  <h2 id="draw-title">抽一張回憶</h2>
-  <div class="actions">
-    <button id="draw-btn" class="btn">抽卡！</button>
-    <span class="sub">隨機回憶</span>
-  </div>
-  <div id="draw-result" style="margin-top:12px">
-    <img id="draw-img" alt="隨機回憶" style="max-width:100%;border-radius:12px;display:none">
-    <p id="draw-caption" class="sub" style="margin-top:8px"></p>
-  </div>
-</section>
+    <!-- 倒數：下一個紀念日 -->
+    <section class="card" aria-labelledby="countdown-title">
+      <h2 id="countdown-title">下一個紀念日倒數</h2>
+      <p class="sub">距離 <strong id="next-anniv-name">—</strong> 還有</p>
+      <span id="next-anniv-days">—</span>
+      <p class="sub">日期：<span id="next-anniv-date">—</span></p>
+    </section>
+
+    <!-- 抽卡：隨機回憶 -->
+    <section class="card" aria-labelledby="draw-title">
+      <h2 id="draw-title">抽一張回憶</h2>
+      <p class="sub">點擊按鈕，隨機回味我們的美好瞬間</p>
+      <div class="actions">
+        <button id="draw-btn" class="btn">抽卡！</button>
+      </div>
+      <div id="draw-result" style="margin-top:12px">
+        <img id="draw-img" alt="隨機回憶" style="max-width:100%;border-radius:12px;display:none">
+        <p id="draw-caption" class="sub" style="margin-top:8px"></p>
+      </div>
+    </section>
+
     <section class="card" aria-labelledby="anniv-title">
       <h2 id="anniv-title">重要紀念日</h2>
+      <p class="sub">記錄我們愛情旅程中的每一個重要時刻</p>
       <ul id="anniv-list" class="anniv-list" aria-live="polite"></ul>
     </section>
 
-    <!-- Email 寄送表單 -->
-<section class="card" aria-labelledby="mail-title">
-  <h2 id="mail-title">寄一封小信給你 ❤</h2>
-  <form id="love-form" action="*" method="POST">
-    <input type="text" name="name" placeholder="你的名字" required
-           style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;margin:5px 0;display:block;width:100%">
-    <input type="email" name="_replyto" placeholder="你的Email（回信用）" required
-           style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;margin:5px 0;display:block;width:100%">
-    <textarea name="message" placeholder="想說的話…" required rows="4"
-              style="padding:8px 12px;border-radius:10px;border:1px solid #ddd;margin:5px 0;display:block;width:100%"></textarea>
-    <button type="submit" class="btn">送出</button>
-  </form>
-  <p id="form-status" class="sub" style="margin-top:8px"></p>
-</section>
-
+    <!-- Email 寄送表單 
+    <section class="card" aria-labelledby="mail-title">
+      <h2 id="mail-title">寄一封小信給你 ❤</h2>
+      <p class="sub">寫下你的心意，讓我感受到你的愛</p>
+      <form id="love-form" action="*" method="POST">
+        <input type="text" name="name" placeholder="你的名字" required
+              style="padding:12px 16px;border-radius:12px;border:1px solid #e8d1da;margin:8px 0;display:block;width:100%">
+        <input type="email" name="_replyto" placeholder="你的Email（回信用）" required
+              style="padding:12px 16px;border-radius:12px;border:1px solid #e8d1da;margin:8px 0;display:block;width:100%">
+        <textarea name="message" placeholder="想說的話…" required rows="4"
+                style="padding:12px 16px;border-radius:12px;border:1px solid #e8d1da;margin:8px 0;display:block;width:100%"></textarea>
+        <button type="submit" class="btn">送出我的心意</button>
+      </form>
+      <p id="form-status" class="sub" style="margin-top:12px"></p>
+    </section>-->
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>為我們製作 by <span id="author">Us</span> · <a href="#" id="toggle-theme">切換主題</a></p>
+      <p>為我們製作 by <span id="author">帥文</span> · <a href="#" id="toggle-theme">切換主題</a></p>
     </div>
   </footer>
 
@@ -146,6 +502,34 @@
   const $  = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
   const pad2 = n => (n<10 ? "0"+n : ""+n);
+
+  // ===== 漂浮愛心效果 =====
+  (function() {
+    const container = $("#floating-hearts");
+    if (!container) return;
+    
+    const createHeart = () => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤";
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDuration = `${15 + Math.random() * 15}s`;
+      heart.style.fontSize = `${12 + Math.random() * 20}px`;
+      container.appendChild(heart);
+      
+      setTimeout(() => {
+        heart.remove();
+      }, 30000);
+    };
+    
+    // 初始創建一些愛心
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => createHeart(), i * 500);
+    }
+    
+    // 定期創建新愛心
+    setInterval(createHeart, 1000);
+  })();
 
   // ===== 天數計算 =====
   (function () {
@@ -254,6 +638,16 @@
       const pick = pool[Math.floor(Math.random() * pool.length)];
       img.src = pick;
       img.style.display = "block";
+      // 添加動畫效果
+      img.style.opacity = "0";
+      img.style.transform = "scale(0.8)";
+      
+      setTimeout(() => {
+        img.style.transition = "all 0.5s ease";
+        img.style.opacity = "1";
+        img.style.transform = "scale(1)";
+      }, 10);
+      
       cap.textContent = CAPTIONS[pick] || "小小的回憶片段";
     };
     btn.addEventListener("click", draw);
@@ -308,7 +702,6 @@
     });
   }
 })();
-
   </script>
 </body>
 </html>
